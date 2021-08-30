@@ -1,0 +1,9 @@
+<svg id="Group_203" data-name="Group 203" xmlns="http://www.w3.org/2000/svg" width="32.918" height="32.918" viewBox="0 0 32.918 32.918">
+    <circle id="Oval" cx="16.459" cy="16.459" r="16.459" fill="#1f1c34"/>
+    <g id="comment" transform="translate(8.886 9.997)">
+        <path id="Path_16" data-name="Path 16" d="M17.636,4.82H4.516A1.312,1.312,0,0,0,3.2,6.132v8.531a1.312,1.312,0,0,0,1.312,1.312h9.208l2.6,2.6v-2.6h1.313a1.312,1.312,0,0,0,1.312-1.312V6.132A1.312,1.312,0,0,0,17.636,4.82Zm.656,9.843a.657.657,0,0,1-.656.656H15.667v1.672L14,15.319H4.516a.656.656,0,0,1-.656-.656V6.132a.657.657,0,0,1,.656-.656h13.12a.656.656,0,0,1,.656.656Z" transform="translate(-3.204 -4.82)" fill="#acbbdf"/>
+        <path id="Path_17" data-name="Path 17" d="M15.59,12.824a.656.656,0,1,0,.656.656A.656.656,0,0,0,15.59,12.824Z" transform="translate(-7.718 -7.9)" fill="#acbbdf"/>
+        <path id="Path_18" data-name="Path 18" d="M19.855,12.824a.656.656,0,1,0,.656.656A.656.656,0,0,0,19.855,12.824Z" transform="translate(-9.359 -7.9)" fill="#acbbdf"/>
+        <path id="Path_19" data-name="Path 19" d="M11.425,12.824a.656.656,0,1,0,.656.656A.656.656,0,0,0,11.425,12.824Z" transform="translate(-6.115 -7.9)" fill="#acbbdf"/>
+    </g>
+</svg>

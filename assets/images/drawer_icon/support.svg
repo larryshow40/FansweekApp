@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+  <g id="life-buoy" transform="translate(1 1)">
+    <path id="Oval" d="M10,0A10,10,0,1,1,0,10,10,10,0,0,1,10,0Z" fill="none" stroke="#111029" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path id="Oval-2" data-name="Oval" d="M4,0A4,4,0,1,1,0,4,4,4,0,0,1,4,0Z" transform="translate(6 6)" fill="none" stroke="#111029" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path id="Shape" d="M0,0,4.24,4.24" transform="translate(2.93 2.93)" fill="none" stroke="#111029" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path id="Shape-2" data-name="Shape" d="M0,0,4.24,4.24" transform="translate(12.83 12.83)" fill="none" stroke="#111029" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path id="Shape-3" data-name="Shape" d="M0,4.24,4.24,0" transform="translate(12.83 2.93)" fill="none" stroke="#111029" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path id="Shape-4" data-name="Shape" d="M0,3.53,3.53,0" transform="translate(12.83 3.64)" fill="none" stroke="#111029" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path id="Shape-5" data-name="Shape" d="M0,4.24,4.24,0" transform="translate(2.93 12.83)" fill="none" stroke="#111029" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+  </g>
+</svg>

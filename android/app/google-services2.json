@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "491166941110",
+    "project_id": "fansweek",
+    "storage_bucket": "fansweek.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:491166941110:android:c34248a11a18c79e0b4b17",
+        "android_client_info": {
+          "package_name": "com.lordwin.fansweek"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "491166941110-535utj19bc7j456573ae9753io61k55i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjQ3bcSOKQTEgX3m183Gl4Xy1gh_w530g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "491166941110-535utj19bc7j456573ae9753io61k55i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

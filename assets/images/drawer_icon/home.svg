@@ -1,0 +1,7 @@
+<svg id="Booking" xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29">
+  <path id="Rectangle_16" data-name="Rectangle 16" d="M0,0H29V29H0Z" fill="none"/>
+  <g id="home" transform="translate(6 5)">
+    <path id="Shape" d="M0,7,9,0l9,7V18a2,2,0,0,1-2,2H2a2,2,0,0,1-2-2Z" fill="none" stroke="#111029" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+    <path id="Shape-2" data-name="Shape" d="M0,10V0H6V10" transform="translate(6 10)" fill="none" stroke="#111029" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+  </g>
+</svg>
