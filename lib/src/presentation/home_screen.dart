@@ -86,8 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: _bottomNavIconBuilder(
                   isSelected: _index == 1, logo: "video", isDark: isDark),
               //  label: helper.getTranslated(context, AppTags.video),
-                  label: helper.getTranslated(context, AppTags.prediction),
-            
+              label: helper.getTranslated(context, AppTags.prediction),
               backgroundColor:
                   isDark ? AppThemeData.darkBackgroundColor : Colors.white),
           BottomNavigationBarItem(
