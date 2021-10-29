@@ -31,3 +31,4 @@ The setting screen separator should be darker and transparent  done
 
 
 Google auth works fine in ios 
+# fansweekmobile
