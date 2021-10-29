@@ -222,7 +222,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       print('the response is false');
 
       print('The response is bad ${response.message}');
-    }
+    } 
   }
 
   Widget _buildTopUI(bool isDark) {
