@@ -90,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       CustomEditText().getCustomEditText(
                         isDark: isDark,
                         hintText:
-                            helper.getTranslated(context, AppTags.userName),
+                            helper.getTranslated(context, AppTags.email),
                         controller: _emailController,
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.emailAddress,

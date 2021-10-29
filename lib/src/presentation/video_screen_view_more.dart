@@ -3,31 +3,23 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:intl/intl.dart';
-import 'package:onoo/config.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as cnv;
 
 //import 'package:nb_utils/nb_utils.dart';
 //import 'package:prokit_flutter/main.dart';
 import 'package:onoo/request.dart';
-import 'package:onoo/src/preferences/database_config.dart';
 import 'package:onoo/src/presentation/match_more_details/match_more_details.dart';
-import 'package:onoo/src/presentation/subscription_verification.dart';
-import 'package:onoo/src/presentation/video_screen_view_more.dart';
 
 enum PredictionFor { Today, Tomorrow, After }
 
-class TabBarDemo extends StatefulWidget {
+class ViewMore extends StatefulWidget {
   static String tag = "/MWTabBarScreen2";
 
   @override
   _MWTabBarScreen2State createState() => _MWTabBarScreen2State();
 }
 
-class _MWTabBarScreen2State extends State<TabBarDemo> {
+class _MWTabBarScreen2State extends State<ViewMore> {
   String selectedDate = " ";
-  late String token;
-  late bool isSubscribed;
 //    String dateSwitch()
 //     {
 // if(tabIndex==0)
@@ -41,16 +33,6 @@ class _MWTabBarScreen2State extends State<TabBarDemo> {
     getData();
     super.initState();
     selectedDate = "${now.year}-${now.month}-${now.day + 1}";
-
-    if (DatabaseConfig().isUserLoggedIn()) {
-      int uid = DatabaseConfig().getOnooUser()!.id!;
-      token = DatabaseConfig().getOnooUser()!.token!;
-
-      print("The id is $uid");
-
-      checkSubscription(uid).then((value) => isSubscribed = value);
-    }
-    
   }
 
   String validateTime(String date) {
@@ -225,59 +207,24 @@ class _MWTabBarScreen2State extends State<TabBarDemo> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          padding: const EdgeInsets.only(left: 10, right: 10,),
                           child: Container(
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: const BorderSide(
-                                              color: Colors.white, width: 1.0),
-                                          borderRadius: const BorderRadius.all(
-                                            Radius.circular(20.0),
-                                          ),
-                                        ),
-                                        prefixIcon: Icon(Icons.search),
-                                        labelText: 'Search'),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                TextButton(
-                                    style: TextButton.styleFrom(
-                                      primary: Colors.white,
-                                      side: BorderSide(
-                                          color: Colors.white, width: 1),
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20))),
+                            child: TextField(
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(20.0),
                                     ),
-                                    onPressed: () {
-                                      isSubscribed
-                                          ? Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (_) => ViewMore()),
-                                            )
-                                          : Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (_) =>
-                                                      SubscriptionScreen()),
-                                            );
-                                    },
-                                    child: Text('View More'))
-                              ],
+                                  ),
+                                  prefixIcon: Icon(Icons.search),
+                                  labelText: 'Search'),
                             ),
                             height: 40,
                             width: double.infinity,
-                            // decoration: BoxDecoration(
-                            //     border: Border.all(color: Colors.white),
-                            //     borderRadius:
-                            //         BorderRadius.all(Radius.circular(20))),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
                           ),
                         ),
                         SizedBox(
@@ -321,71 +268,71 @@ class _MWTabBarScreen2State extends State<TabBarDemo> {
                         SizedBox(
                           height: 10,
                         ),
-                        // Container(
-                        //   color: Color(0xFF161A25),
-                        //   child: Padding(
-                        //     padding: const EdgeInsets.only(
-                        //         top: 5, left: 10, right: 10),
-                        //     child: Row(
-                        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //       children: [
-                        //         filter(federations, true, hint1),
-                        //         SizedBox(width: 10),
-                        //         filter(markets, false, hint2),
-                        //         SizedBox(width: 10),
+                        Container(
+                          color: Color(0xFF161A25),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 5, left: 10, right: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                filter(federations, true, hint1),
+                                SizedBox(width: 10),
+                                filter(markets, false, hint2),
+                                SizedBox(width: 10),
 
-                        //         GestureDetector(
-
-                        //           onTap: () {
-                        //             DatePicker.showDatePicker(context,
-                        //                 showTitleActions: true,
-                        //                 minTime: DateTime(2018, 3, 5),
-                        //                 theme: DatePickerTheme(
-                        //                     headerColor: Colors.white,
-                        //                     backgroundColor: Colors.white,
-                        //                     itemStyle: TextStyle(
-                        //                         color: Colors.black,
-                        //                         fontWeight: FontWeight.bold,
-                        //                         fontSize: 18),
-                        //                     doneStyle: TextStyle(
-                        //                         color: Colors.black,
-                        //                         fontSize: 16)),
-                        //                 onChanged: (date) {
-                        //               print('change $date in time zone ' +
-                        //                   date.timeZoneOffset.inHours
-                        //                       .toString());
-                        //             }, onConfirm: (date) {
-                        //               setState(() {
-                        //                 selectedDate =
-                        //                     '${date.year}-${date.month}-${date.day}';
-                        //               });
-                        //               print(
-                        //                   'confirm ${date.year}-${date.month}-${date.day} ');
-                        //             },
-                        //                 currentTime: DateTime.now(),
-                        //                 locale: LocaleType.en);
-                        //           },
-                        //           child: Container(
-                        //             child: Icon(
-                        //               Icons.date_range_outlined,
-                        //               size: 25,
-                        //               color: Colors.white,
-                        //             ),
-                        //           //  height: 40,
-                        //           //  width: 80,
-                        //             decoration: BoxDecoration(
-                        //                 color: Colors.black,
-                        //                 borderRadius: BorderRadius.all(
-                        //                     Radius.circular(20))),
-                        //           ),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
+                                GestureDetector(
+                                  
+                                  onTap: () {
+                                    DatePicker.showDatePicker(context,
+                                        showTitleActions: true,
+                                        minTime: DateTime(2018, 3, 5),
+                                        theme: DatePickerTheme(
+                                            headerColor: Colors.white,
+                                            backgroundColor: Colors.white,
+                                            itemStyle: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18),
+                                            doneStyle: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16)),
+                                        onChanged: (date) {
+                                      print('change $date in time zone ' +
+                                          date.timeZoneOffset.inHours
+                                              .toString());
+                                    }, onConfirm: (date) {
+                                      setState(() {
+                                        selectedDate =
+                                            '${date.year}-${date.month}-${date.day}';
+                                      });
+                                      print(
+                                          'confirm ${date.year}-${date.month}-${date.day} ');
+                                    },
+                                        currentTime: DateTime.now(),
+                                        locale: LocaleType.en);
+                                  },
+                                  child: Container(
+                                    child: Icon(
+                                      Icons.date_range_outlined,
+                                      size: 25,
+                                      color: Colors.white,
+                                    ),
+                                  //  height: 40,
+                                  //  width: 80,
+                                    decoration: BoxDecoration(
+                                        color: Colors.black,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20))),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-              preferredSize: Size.fromHeight(120.0),
+              preferredSize: Size.fromHeight(150.0),
             ),
 
             // title: Text('TabBar with Title and Icon', style: boldTextStyle(color: appStore.textPrimaryColor, size: 20)),
@@ -713,26 +660,5 @@ class _MWTabBarScreen2State extends State<TabBarDemo> {
         );
       },
     );
-  }
-
-  Future<bool> checkSubscription(int id) async {
-    String url =
-        'https://fansweek.com/api/v10/user/user-details-by-id?id=${id.toString()}';
-    var headers = {
-      "apiKey": Config.API_KEY,
-      'Authorization': 'Bearer $token',
-    };
-
-    print(url);
-    final res = await http.Client().get(
-      Uri.parse(url),
-      headers: headers,
-    );
-    // print(res);
-    var jsonResponse = cnv.jsonDecode(res.body);
-    print(jsonResponse);
-    final value = jsonResponse['data']['isSubscribed'];
-
-    return value;
   }
 }

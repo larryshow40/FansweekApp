@@ -47,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // VideoScreen(),
     TabBarDemo(),
     DiscoverScreen(),
+    // DiscoverScreen(),
     ProfileScreen(
       isFromDrawer: false,
     ),

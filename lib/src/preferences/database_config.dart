@@ -133,6 +133,8 @@ class DatabaseConfig {
     return isUserLoggedIn != null ? isUserLoggedIn : false;
   }
 
+ 
+
   //user data
   saveUserData(OnnoUser user) {
     Box<OnnoUser> box = Hive.box<OnnoUser>(Constants.userDataBoxName);
