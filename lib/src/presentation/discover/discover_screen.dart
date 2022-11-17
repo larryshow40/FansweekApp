@@ -16,6 +16,7 @@ import 'package:onoo/src/utils/app_tags.dart';
 import 'package:onoo/src/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert' as cnv;
+import '../../../app_theme_data.dart';
 import 'data_model.dart';
 
 class DiscoverScreen extends StatefulWidget {
@@ -79,7 +80,26 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
     return isLoggedIn
         ? Scaffold(
             appBar: AppBar(
-              title: Text(' Betting Codes'),
+              //tetsing something 
+              backgroundColor: isDark
+            ? AppThemeData.darkBackgroundColor
+            : AppThemeData.lightBackgroundColor,
+        title: Center(
+          child: Container(
+            child: isDark
+                ? Image.asset(
+                    "assets/images/Fansweek codes.png",
+                    height: 40,
+                  )
+                : Image.asset(
+                    'assets/images/Fansweek codes.png',
+                    height: 40,
+                  ),
+          ),
+        ),
+
+              //end of testing 
+              // title: Text(' Betting Codes'),
               actions: <Widget>[
                 // Text('Share Code'),
                 Padding(
