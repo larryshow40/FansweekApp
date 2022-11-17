@@ -66,8 +66,8 @@ class _LoginScreenState extends State<LoginScreen> {
             image: DecorationImage(
           fit: BoxFit.fill,
           image: isDark
-              ? AssetImage('assets/images/background_dark.png')
-              : AssetImage('assets/images/background_light.png'),
+              ? AssetImage('assets/images/login_screen_dark.png')
+              : AssetImage('assets/images/login_screen_dark.png'),
         )),
         child: Stack(
           children: [
@@ -78,19 +78,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       horizontal: AppThemeData.wholeScreenPadding * 2),
                   child: Column(
                     children: [
-                      SizedBox(height: 60),
-                      Image.asset(
-                        isDark
-                            ? 'assets/images/logo_round_dark.png'
-                            : 'assets/images/logo_round_light.png',
-                        scale: 4,
-                      ),
+                      SizedBox(height: 120),
+                      // Image.asset(
+                      //   isDark
+                      //       ? 'assets/images/logo_round_dark.png'
+                      //       : 'assets/images/logo_round_light.png',
+                      //   scale: 4,
+                      // ),
                       SizedBox(height: 80),
                       //email
                       CustomEditText().getCustomEditText(
                         isDark: isDark,
                         hintText:
-                            helper.getTranslated(context, AppTags.userName),
+                            helper.getTranslated(context, AppTags.emailAddress),
                         controller: _emailController,
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.emailAddress,

@@ -1,17 +1,22 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:onoo/app_theme_data.dart';
-import 'package:onoo/src/data/model/discover/discover_model.dart';
-import 'package:onoo/src/data/repository.dart';
-import 'package:onoo/src/preferences/theme_provider.dart';
-import 'package:onoo/src/presentation/discover/discover_posts_by_cat_screen.dart';
-import 'package:onoo/src/presentation/sub_cat_post_screen.dart';
-import 'package:onoo/src/utils/utils.dart';
-import 'package:onoo/src/utils/ads/ads_utils.dart';
-import 'package:onoo/src/utils/app_tags.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 import 'package:onoo/src/data/helper/localization_helper.dart' as helper;
-import 'package:onoo/src/utils/constants.dart';
-import 'package:onoo/src/widgets/loading_indicator.dart';
+import 'package:share/share.dart';
+import 'package:onoo/config.dart';
+import 'package:onoo/src/preferences/database_config.dart';
+import 'package:onoo/src/preferences/theme_provider.dart';
+import 'package:onoo/src/presentation/sign_in/login_screen.dart';
+import 'package:onoo/src/utils/app_tags.dart';
+import 'package:onoo/src/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
+import 'dart:convert' as cnv;
+import 'data_model.dart';
 
 class DiscoverScreen extends StatefulWidget {
   static final String route = '/DiscoverScreen';
@@ -20,340 +25,448 @@ class DiscoverScreen extends StatefulWidget {
 }
 
 class _DiscoverScreenState extends State<DiscoverScreen> {
-  bool isDark = false;
-  late Future<DiscoverModel> discoverData;
+  late List<Data> model = [];
+  late String token;
+  late bool isLiked;
+  TextEditingController endDateController = TextEditingController();
+  late String betComp = '';
+  late String betCode = '';
+  late String endDate = '';
 
+  late Timer _timer;
+  int _start = 20;
+  bool isTimerOff = false;
   @override
   void initState() {
+    print(model);
+    print(model);
+    endDateController.text = '';
+    if (DatabaseConfig().isUserLoggedIn()) {
+      int uid = DatabaseConfig().getOnooUser()!.id!;
+      token = DatabaseConfig().getOnooUser()!.token!;
+      print(token);
+      print("The id is $uid");
+      // startTimer();
+      getData();
+    }
     super.initState();
-    discoverData = Repository().getDiscoverData();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    printLog("_DiscoverScreenState");
-    isDark = Provider.of<ThemeProvider>(context).isDarkMode;
-
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: isDark
-              ? AppThemeData.darkBackgroundColor
-              : AppThemeData.lightBackgroundColor,
-          title: Container(
-            child: Text(
-              helper.getTranslated(context, AppTags.discover),
-              style: Theme.of(context).textTheme.headline3,
-            ),
-          ),
-          actions: [
-            IconButton(
-                icon: Image.asset(
-                  "assets/images/home_screen/search_icon.png", height: 30,
-                  color: isDark ? AppThemeData.textColorDark.withOpacity(0.7) : AppThemeData.textColorLight.withOpacity(0.7),
-                ),
-                onPressed: () {}),
-          ],
-        ),
-        backgroundColor: isDark
-            ? AppThemeData.darkBackgroundColor
-            : AppThemeData.lightBackgroundColor,
-        body: FutureBuilder<DiscoverModel>(
-          future: discoverData,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              DiscoverModel data = snapshot.data!;
-              return _buildUI(data);
-            } else if (snapshot.hasError) {
-              ScaffoldMessenger.of(context)
-                ..hideCurrentSnackBar()
-                ..showSnackBar(SnackBar(
-                  content: Text("Failed to load data."),
-                  backgroundColor: Colors.red,
-                ));
-            }
-            return Center(
-              child: LoadingIndicator(),
-            );
-          },
-        ),
+  void startTimer() {
+    const duration = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      duration,
+      (Timer timer) => setState(
+        () {
+          if (_start < 1) {
+            print('Timer stopped');
+            isTimerOff = true;
+            timer.cancel();
+          } else {
+            _start = _start - 1;
+            print(_start);
+          }
+        },
       ),
     );
   }
 
-  Widget _buildUI(DiscoverModel data) {
-    Size size = MediaQuery.of(context).size;
-    //final double itemHeight = (size.height - kToolbarHeight - 24) / 2;
-    final double itemHeight = 140.0;
-    final double itemWidth = size.width / 2;
+  @override
+  Widget build(BuildContext context) {
+    bool isLoggedIn = DatabaseConfig().isUserLoggedIn();
+    bool isDark = Provider.of<ThemeProvider>(context).isDarkMode;
 
-    return ListView(
-      scrollDirection: Axis.vertical,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(AppThemeData.wholeScreenPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  helper.getTranslated(context, AppTags.recommend),
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
-                child: GridView.count(
-                  shrinkWrap: true,
-                  childAspectRatio: (itemWidth / itemHeight),
-                  controller: new ScrollController(keepScrollOffset: false),
-                  scrollDirection: Axis.vertical,
-                  physics: NeverScrollableScrollPhysics(),
-                  crossAxisCount: 2,
-                  children: List.generate(
-                      data.data.recommendedCategories.length, (index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(0.0),
-                      child: Container(
-                        child: Card(
-                          color: Utils().getCardBackgroundColor(context),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                AppThemeData.cardBorderRadius),
-                          ),
-                          elevation: AppThemeData.cardElevation,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => DiscoverPostByCatScreen(categoryId: data.data.recommendedCategories[index].id, catType: "recommended", catName: data.data.recommendedCategories[index].categoryName)));
-                            },
-                            child: Stack(
-                              children: [
-                                Container(
-                                  height: double.infinity,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(
-                                            AppThemeData.cardBorderRadius)),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(
-                                            AppThemeData.cardBorderRadius)),
-                                    child: FadeInImage.assetNetwork(
-                                      fit: BoxFit.cover,
-                                      imageErrorBuilder:
-                                          (context, error, stackTrace) {
-                                        return Image.asset(
-                                          "assets/images/logo_rectangle.png",
-                                          fit: BoxFit.cover,
-                                        );
-                                      },
-                                      placeholder: "assets/images/logo_rectangle.png",
-                                      image: data.data.recommendedCategories[index].image,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 25),
-                                    child: Text(
-                                      data.data.recommendedCategories[index]
-                                          .categoryName,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline2!
-                                          .copyWith(color: Colors.white),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-                ),
-              ),
-              Visibility(
-                visible: data.data.featuredCategories.length > 0,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10.0),
-                      child: Text(
-                        helper.getTranslated(context, AppTags.featured),
-                        style: Theme.of(context).textTheme.headline3,
+    return isLoggedIn
+        ? Scaffold(
+            appBar: AppBar(
+              title: Text(' Betting Codes'),
+              actions: <Widget>[
+                // Text('Share Code'),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 10,
+                    //         padding: const EdgeInsets.only(
+                    //             top: 1, left: 10, right: 10),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.red),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(10.0),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 0.0),
-                      child: GridView.count(
-                        shrinkWrap: true,
-                        childAspectRatio: (itemWidth / itemHeight),
-                        controller:
-                            new ScrollController(keepScrollOffset: false),
-                        scrollDirection: Axis.vertical,
-                        physics: NeverScrollableScrollPhysics(),
-                        crossAxisCount: 2,
-                        children: List.generate(
-                            data.data.featuredCategories.length, (index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Container(
-                              child: Card(
-                                color: Utils().getCardBackgroundColor(context),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      AppThemeData.cardBorderRadius),
-                                ),
-                                elevation: AppThemeData.cardElevation,
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                DiscoverPostByCatScreen(
-                                                    categoryId: data.data.featuredCategories[index].id,
-                                                    catType: "featured",
-                                                    catName: data.data.featuredCategories[index].categoryName)));
-                                  },
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        height: double.infinity,
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.rectangle,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(AppThemeData
-                                                  .cardBorderRadius)),
+                    child: TextButton(
+                      style: ButtonStyle(),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            'Share Code',
+                            style: TextStyle(color: Colors.white),
+                          )
+                        ],
+                      ),
+                      onPressed: () {
+                        // do something
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                scrollable: true,
+                                title: Text('Share Betting Codes'),
+                                content: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Form(
+                                    child: Column(
+                                      children: <Widget>[
+                                        TextFormField(
+                                          decoration: InputDecoration(
+                                            labelText: 'Betting Company',
+                                            icon: Icon(Icons.account_box),
+                                          ),
+                                          onChanged: (input) => betComp = input,
                                         ),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(AppThemeData
-                                                  .cardBorderRadius)),
-                                          child: FadeInImage.assetNetwork(
-                                            fit: BoxFit.cover,
-                                            imageErrorBuilder:
-                                                (context, error, stackTrace) {
-                                              return Image.asset(
-                                                "assets/images/logo_rectangle.png",
-                                                fit: BoxFit.cover,
-                                              );
+                                        TextFormField(
+                                          decoration: InputDecoration(
+                                            labelText: 'Betting Code',
+                                            icon: Icon(Icons.arrow_right),
+                                          ),
+                                          onChanged: (input) => betCode = input,
+                                        ),
+                                        TextFormField(
+                                          controller: endDateController,
+                                          // initialValue: endDateController.text,
+                                          decoration: InputDecoration(
+                                            labelText: 'End Date',
+                                            icon: Icon(Icons.date_range),
+                                          ),
+                                          onChanged: (input) => endDate = input,
+                                          onTap: () async {
+                                            //  _selectDate(context);
+                                            DatePicker.showDatePicker(context,
+                                                showTitleActions: true,
+                                                minTime: DateTime(2018, 3, 5),
+                                                theme: DatePickerTheme(
+                                                    headerColor: Colors.white,
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    itemStyle: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 18),
+                                                    doneStyle: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 16)),
+                                                onChanged: (date) {
+                                              print(
+                                                  'change $date in time zone ' +
+                                                      date.timeZoneOffset
+                                                          .inHours
+                                                          .toString());
+                                            }, onConfirm: (date) {
+                                              setState(() {
+                                                endDateController.text =
+                                                    '${date.year}-${date.month}-${date.day}';
+                                                endDate =
+                                                    '${date.year}-${date.month}-${date.day}';
+                                              });
+                                              print(
+                                                  'confirm ${date.year}-${date.month}-${date.day} ');
                                             },
-                                            placeholder: "assets/images/logo_rectangle.png",
-                                            image: data.data.featuredCategories[index].image,
-                                          ),
+                                                currentTime: DateTime.now(),
+                                                locale: LocaleType.en);
+                                          },
                                         ),
-                                      ),
-                                      Container(
-                                        alignment: Alignment.bottomLeft,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 12, vertical: 25),
-                                          child: Text(
-                                            data.data.featuredCategories[index]
-                                                .categoryName,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline2!
-                                                .copyWith(color: Colors.white),
-                                          ),
-                                        ),
-                                      )
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
+                                actions: [
+                                  RaisedButton(
+                                      child: Text("Share Code"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        // your code
+                                        shareCode();
+                                      })
+                                ],
+                              );
+                            });
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
+
+            // body: model.length < 1
+
+            body: model.length < 1
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView.builder(
+                    itemBuilder: (BuildContext context, int index) {
+                      return Card(
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 30,
+                              child: Column(
+                                children: [
+                                  Text(model[index].createdAt.substring(0, 2)),
+                                  Text(model[index].createdAt.substring(3, 6)),
+                                ],
                               ),
                             ),
-                          );
-                        }),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
-                    child: Text(
-                      helper.getTranslated(context, AppTags.discoverByCategory),
-                      style: Theme.of(context).textTheme.headline3,
-                    ),
-                  ),
+                            Expanded(
+                              child: ListTile(
+                                title: Text(model[index].code),
+                                subtitle: Text(
+                                    "${model[index].name} by ${model[index].user.substring(0, 5)}"),
+                                // subtitle: Text(model[index].body),
+                                leading: CircleAvatar(
+                                    // backgroundImage: AssetImage("assets/images/soccer.png")),
+                                    backgroundImage:
+                                        AssetImage("assets/images/soccer.png")),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(model[index].likesCount),
+                                    model[index].liked
+                                        ? IconButton(
+                                            onPressed: () {
+                                              if (model[index].liked) {
+                                                codeLike(
+                                                    int.parse(model[index].id));
 
-                  Wrap(
-                    children:  data.data.discoverByCategories
-                        .map((data) =>  Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 2.5,
-                        child: Column(
-                          children: [
-                            Text(
-                              data
-                                  .categoryName,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline3!
-                                  .copyWith(fontWeight: FontWeight.bold),
+                                                setState(() {
+                                                  model[index].liked = false;
+                                                  model[index].likesCount =
+                                                      (int.parse(model[index]
+                                                                  .likesCount) -
+                                                              1)
+                                                          .toString();
+                                                });
+                                              } else {
+                                                codeLike(
+                                                    int.parse(model[index].id));
+
+                                                setState(() {
+                                                  model[index].liked = true;
+                                                  model[index].likesCount =
+                                                      (int.parse(model[index]
+                                                                  .likesCount) +
+                                                              1)
+                                                          .toString();
+                                                });
+                                              }
+                                            },
+                                            icon: Icon(
+                                              Icons.favorite,
+                                              color: Colors.red,
+                                            ))
+                                        : IconButton(
+                                            onPressed: () {
+                                              if (model[index].liked) {
+                                                codeLike(
+                                                    int.parse(model[index].id));
+
+                                                setState(() {
+                                                  model[index].liked = false;
+                                                  model[index].likesCount =
+                                                      (int.parse(model[index]
+                                                                  .likesCount) -
+                                                              1)
+                                                          .toString();
+                                                });
+                                              } else {
+                                                codeLike(
+                                                    int.parse(model[index].id));
+
+                                                setState(() {
+                                                  model[index].liked = true;
+                                                  model[index].likesCount =
+                                                      (int.parse(model[index]
+                                                                  .likesCount) +
+                                                              1)
+                                                          .toString();
+                                                });
+                                              }
+                                            },
+                                            icon: model[index].liked
+                                                ? Icon(Icons.favorite)
+                                                : Icon(Icons.favorite_border)),
+                                    IconButton(
+                                        onPressed: () {
+                                          Share.share(model[index].code,
+                                              subject: 'Share Code');
+                                        },
+                                        icon: Icon(Icons.share)),
+                                  ],
+                                  // LikeButton(),
+                                ),
+                                // trailing: Icon(Icons.star)),
+                              ),
                             ),
-                            Container(
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  primary: false,
-                                  itemCount: data.subCategory.length,
-                                  itemBuilder: (context, i) => InkWell(
-                                    onTap: () {
-                                      //navigate to subcat screen
-                                      Navigator.pushNamed(context, SubCatPostsScreen.route, arguments: {
-                                        'subCatId': data.subCategory[i].id,
-                                        'subCatName': data.subCategory[i].subCategoryName});
-                                    },
-                                    child: Padding(
-                                      padding:
-                                      const EdgeInsets.all(3.0),
-                                      child: Center(
-                                        child: Text(
-                                          data.subCategory[i]
-                                              .subCategoryName,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline2,
-                                        ),
-                                      ),
-                                    ),
-                                  )),
-                            )
                           ],
                         ),
-                      ),
-                    )
-                    ).toList(),
+                      );
+                    },
+                    itemCount: model.length,
                   ),
+          )
+        : Material(child: _profileWithoutLogin(context, isDark));
+  }
 
+  Future<void> getData() async {
+    // print('Getting Data ====');
+    // Uri url = Uri.https('jsonplaceholder.typicode.com', '/posts');
+    String url = 'https://fansweek.com/api/list-codes';
+
+    var headers = {
+      "apiKey": Config.API_KEY,
+      'Authorization': 'Bearer $token',
+    };
+    print(url);
+    final res = await http.Client().get(Uri.parse(url), headers: headers);
+    // print(res);
+    var jsonResponse = cnv.jsonDecode(res.body);
+    print(jsonResponse);
+    final parsed = jsonResponse['data'].cast<Map<String, dynamic>>();
+    // print(parsed);
+    model = parsed.map<Data>((json) => Data.fromJson(json)).toList();
+    //var model1 = parsed[1]['id'];
+    //print("The model1 is $model");
+    // print(parsed);
+
+    setState(() {});
+    // print(res.body);
+    // http.Response res = await http.get(url);
+    // print(url);
+
+    // print(res.body);
+    // var body = cnv.jsonDecode(res.body);
+    // var list = body['data'];
+    // print(list);
+    // model = body
+    //     .map<DataModel>((dynamic item) => DataModel.fromJson(item))
+    //     .toList();
+    // print(list.runtimeType);
+    // model = list.map((i) => Data.fromJson(i)).toList();
+    // List<Data> newlist = list.map((i) => Data.fromJson(i)).toList();
+    // print(newlist);
+  }
+
+  codeLike(int codeId) async {
+    var url = Uri.parse("https://fansweek.com/api/like-code");
+
+    var headers = {
+      "apiKey": Config.API_KEY,
+      'Authorization': 'Bearer $token',
+    };
+    var body = {"code_id": codeId.toString()};
+    final client = new http.Client();
+    final response = await client.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      //TODO:: CHANGE SUCCESS TO MESSAGE
+
+      print('The message is ${response.statusCode}');
+
+      return jsonDecode(response.body)["message"];
+    }
+    if (response.statusCode != 200) {
+      print("there is an error!");
+      print('The message is ${response.body}');
+    }
+  }
+
+  shareCode() async {
+    var url = Uri.parse("https://fansweek.com/api/share-code");
+
+    var headers = {
+      "apiKey": Config.API_KEY,
+      'Authorization': 'Bearer $token',
+    };
+    var body = {
+      'bet_company': betComp,
+      'bet_code': betCode,
+      'end_date': endDate,
+    };
+    final client = new http.Client();
+    final response = await client.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      //TODO:: CHANGE SUCCESS TO MESSAGE
+      showDialog(
+          context: context,
+          builder: (BuildContext modalContext) {
+            return AlertDialog(
+              title: Text('Success!'),
+              content: Text('Thank you for sharing!'),
+              actions: [
+                RaisedButton(
+                    child: Text("Close"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    })
+              ],
+            );
+          });
+
+      print('The message is ${response.statusCode}');
+
+      return jsonDecode(response.body)["message"];
+    }
+    if (response.statusCode != 200) {
+      print("there is an error!");
+      print('The message is ${response.body}');
+    }
+  }
+
+  Widget _profileWithoutLogin(context, isDark) {
+    return SingleChildScrollView(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+          fit: BoxFit.fill,
+          image: isDark
+              ? AssetImage('assets/images/splash_screen_dark.png')
+              : AssetImage('assets/images/background_light.png'),
+        )),
+        child: Column(
+          children: [
+            SizedBox(height: MediaQuery.of(context).size.height / 2),
+            //  _buildTopUI(isDark),
+            SizedBox(height: 50),
+            Padding(
+              padding: const EdgeInsets.only(left: 30, right: 30),
+              child: Column(
+                children: [
+                  //sign up button
+                  CustomButtonGradient(
+                      isDark: isDark,
+                      text:
+                          "${helper.getTranslated(context, AppTags.signUp)}/${helper.getTranslated(context, AppTags.signIn)}",
+                      onPressed: () {
+                        Navigator.pushNamed(context, LoginScreen.route);
+                      }),
+                  //social login button
+                  Padding(
+                      padding: EdgeInsets.only(top: 35, left: 55, right: 55),
+                      child: Text("You must be signed in to continue")),
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: Container(
-                    alignment: Alignment.center,
-                    child: AdsUtils.showBannerAds()),
-              ),
-            ],
-          ),
-        )
-      ],
+            )
+          ],
+        ),
+      ),
     );
   }
 }

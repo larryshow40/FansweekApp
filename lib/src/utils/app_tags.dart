@@ -13,6 +13,8 @@ class AppTags {
   static final String business = "business";
   static final String author = "author";
   static final String prediction = "prediction";
+  static final String gameCodes = "Game Codes";
+
   //intro screen
   static final String preButton = "preButton";
   static final String nextButton = "nextButton";

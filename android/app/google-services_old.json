@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "52111084306",
+    "project_id": "onno-test",
+    "storage_bucket": "onno-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:52111084306:android:33b577cc76a026550541cb",
+        "android_client_info": {
+          "package_name": "com.spagreen.onno"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "52111084306-b45dn2te2fhavq7lnpud9adabe1h8lbo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.spagreen.onno",
+            "certificate_hash": "8518ead27e030ac3ae90dcc606333168fdb407a0"
+          }
+        },
+        {
+          "client_id": "52111084306-ie93rcq0lubivjcfeuom1r2fgak6p0kq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeFH4aTmbCehDY0yylx__BVY-ISj83jss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "52111084306-ie93rcq0lubivjcfeuom1r2fgak6p0kq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

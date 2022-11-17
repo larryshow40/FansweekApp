@@ -128,7 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   : AppThemeData.textColorLight)),
                       // ignore: unnecessary_null_comparison
                       if(user != null)
-                      Text(user.about!.length > 2 ? user.about! : "Bangladesh, Dhaka", style: TextStyle(fontSize: 18, color: Color(0xff999999)),),
+                      Text(user.about!.length > 2 ? user.about! : "Lagos, Nigeria", style: TextStyle(fontSize: 18, color: Color(0xff999999)),),
                       SizedBox(
                         height: 10,
                       )
@@ -270,13 +270,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             image: DecorationImage(
           fit: BoxFit.fill,
           image: isDark
-              ? AssetImage('assets/images/background_dark.png')
-              : AssetImage('assets/images/background_light.png'),
+              ? AssetImage('assets/images/login_screen_dark.png')
+              : AssetImage('assets/images/login_screen_dark.png'),
         )),
         child: Column(
           children: [
-            SizedBox(height: 60),
-            _buildTopUI(isDark),
+            SizedBox(height: 150),
+           // _buildTopUI(isDark),
             SizedBox(height: 50),
             Padding(
               padding: const EdgeInsets.only(left: 30, right: 30),
@@ -444,9 +444,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   //build_screen_header
-  Widget _buildTopUI(bool isDark) {
-    return isDark
-        ? Image.asset('assets/images/logo_round_dark.png', scale: 4)
-        : Image.asset('assets/images/logo_round_light.png', scale: 4);
-  }
+  // Widget _buildTopUI(bool isDark) {
+  //   return isDark
+  //       ? Image.asset('assets/images/logo_round_dark.png', scale: 4)
+  //       : Image.asset('assets/images/logo_round_light.png', scale: 4);
+  // }
 }

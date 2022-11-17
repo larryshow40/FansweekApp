@@ -21,6 +21,17 @@ class ThemeProvider with ChangeNotifier {
     DatabaseConfig().saveThemeMode(isOn);
     notifyListeners();
   }
+//New Test
+bool get isLightMode {
+    if (themeMode == ThemeMode.system) {
+      final brightness = SchedulerBinding.instance!.window.platformBrightness;
+      return brightness == Brightness.light;
+    } else {
+      return themeMode == ThemeMode.light;
+    }
+  }
+
+
 }
 
 class MyThemes {
@@ -33,10 +44,15 @@ class MyThemes {
     scaffoldBackgroundColor: AppThemeData.darkBackgroundColor,
     colorScheme: ColorScheme.dark(),
     cardTheme: CardTheme(color: AppThemeData.cardBackgroundColorDark),
-    iconTheme: IconThemeData(color: AppThemeData.textColorDark.withOpacity(0.5)),
-    appBarTheme: AppBarTheme(iconTheme: IconThemeData(color: AppThemeData.textColorDark)),
+    iconTheme:
+        IconThemeData(color: AppThemeData.textColorDark.withOpacity(0.5)),
+    appBarTheme: AppBarTheme(
+        iconTheme: IconThemeData(color: AppThemeData.textColorDark)),
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    tabBarTheme: TabBarTheme(labelColor: Colors.amber, unselectedLabelColor: Colors.black,),
+    tabBarTheme: TabBarTheme(
+      labelColor: Colors.amber,
+      unselectedLabelColor: Colors.black,
+    ),
     //text  field cursor color
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: AppThemeData.textColorDark,
@@ -89,8 +105,12 @@ class MyThemes {
     accentColor: Colors.grey,
     colorScheme: ColorScheme.light(),
     cardTheme: CardTheme(color: AppThemeData.cardBackgroundColorLight),
-    iconTheme: IconThemeData(color: AppThemeData.textColorLight.withOpacity(0.5)),
-    appBarTheme: AppBarTheme(iconTheme: IconThemeData(color: AppThemeData.textColorLight,)),
+    iconTheme:
+        IconThemeData(color: AppThemeData.textColorLight.withOpacity(0.5)),
+    appBarTheme: AppBarTheme(
+        iconTheme: IconThemeData(
+      color: AppThemeData.textColorLight,
+    )),
     visualDensity: VisualDensity.adaptivePlatformDensity,
     tabBarTheme: TabBarTheme(
       labelColor: Colors.amber,

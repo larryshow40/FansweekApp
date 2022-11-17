@@ -64,7 +64,7 @@ class SliderListRow extends StatelessWidget {
                       image: posts!.image != null
                           ? posts!.image!.mediumImage!
                           : "",
-                      placeholder: "assets/images/medium_logo_rectangle.png",
+                      placeholder: "assets/images/fansweek.png",
                     ),
                   ),
                 ),

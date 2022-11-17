@@ -273,6 +273,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 helper.getTranslated(context, AppTags.darkMode),
                 style: Theme.of(context).textTheme.headline3,
               ),
+             
               Container(
                 child: Center(
                   child: Container(
