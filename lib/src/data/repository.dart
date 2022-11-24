@@ -63,6 +63,9 @@ class Repository {
   Future<AuthModel?> login(
       {required String email, required String password}) async {
     var url = Uri.parse("${Config.API_SERVER_URL}/v10/login");
+    print(url);
+    print("========================");
+    // var url = Uri.parse("${Config.API_SERVER_URL}/login");
     var headers = {
       "apiKey": Config.API_KEY,
     };
@@ -83,14 +86,15 @@ class Repository {
       return null;
     } catch (e) {
       print('------login error: ' + e.toString());
+
       return null;
     }
   }
 
   //config_data
   Future<ConfigData?> getConfigData() async {
-    var url =
-        Uri.parse("${Config.API_SERVER_URL}/v10/config?lang=$selectedLanguageCode");
+    var url = Uri.parse(
+        "${Config.API_SERVER_URL}/v10/config?lang=$selectedLanguageCode");
     var headers = {"apiKey": Config.API_KEY};
     try {
       var response = await http.get(url, headers: headers);
@@ -239,11 +243,13 @@ class Repository {
   //post details
   Future<PostDetails?> getPostDetails({required int id}) async {
     print("postID:$id");
-    var url = Uri.parse("${Config.API_SERVER_URL}/v10/detail/$id?lang=$selectedLanguageCode");
+    var url = Uri.parse(
+        "${Config.API_SERVER_URL}/v10/detail/$id?lang=$selectedLanguageCode");
     var headers = {"apiKey": Config.API_KEY};
     try {
       final response = await http.get(url, headers: headers);
-      PostDetails postDetails = PostDetails.fromJson(json.decode(response.body));
+      PostDetails postDetails =
+          PostDetails.fromJson(json.decode(response.body));
       if (response.statusCode == 200) {
         return postDetails;
       } else {
@@ -291,13 +297,15 @@ class Repository {
 
   // Discover api
   Future<DiscoverModel> getDiscoverData() async {
-    var url = Uri.parse("${Config.API_SERVER_URL}/v10/discover?lang=$selectedLanguageCode");
+    var url = Uri.parse(
+        "${Config.API_SERVER_URL}/v10/discover?lang=$selectedLanguageCode");
     var headers = {"apiKey": Config.API_KEY};
     final response = await http.get(url, headers: headers);
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
       if (jsonData['success'] == true) {
-        DiscoverModel discover = DiscoverModel.fromJson(jsonDecode(response.body));
+        DiscoverModel discover =
+            DiscoverModel.fromJson(jsonDecode(response.body));
         return discover;
       }
       throw Exception("Failed to load discover data.");
@@ -307,14 +315,19 @@ class Repository {
   }
 
   // All posts related to discover category
-  Future<DiscoverPostsByCat> getDiscoverPostByCategory({required String catType, required int catId, required int pageNumber}) async {
-    var url = Uri.parse("${Config.API_SERVER_URL}/v10/discover-$catType-posts?page=1&category=$catId&lang=$selectedLanguageCode");
+  Future<DiscoverPostsByCat> getDiscoverPostByCategory(
+      {required String catType,
+      required int catId,
+      required int pageNumber}) async {
+    var url = Uri.parse(
+        "${Config.API_SERVER_URL}/v10/discover-$catType-posts?page=1&category=$catId&lang=$selectedLanguageCode");
     var headers = {"apiKey": Config.API_KEY};
     final response = await http.get(url, headers: headers);
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
       if (jsonData['success']) {
-        DiscoverPostsByCat data = DiscoverPostsByCat.fromJson(jsonDecode(response.body));
+        DiscoverPostsByCat data =
+            DiscoverPostsByCat.fromJson(jsonDecode(response.body));
         return data;
       } else {
         throw Exception("Discover post of $catType failed to load.");
@@ -488,8 +501,8 @@ class Repository {
       required String reply,
       required String token}) async {
     try {
-      var url =
-          Uri.parse("${Config.API_SERVER_URL}/v10/save-comment-reply?token=$token");
+      var url = Uri.parse(
+          "${Config.API_SERVER_URL}/v10/save-comment-reply?token=$token");
       var headers = {"apiKey": Config.API_KEY};
       var body = {
         "post_id": postId.toString(),

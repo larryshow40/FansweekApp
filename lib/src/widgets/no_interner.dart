@@ -26,7 +26,7 @@ class NoInternetScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Image.asset('assets/images/icons/img_no_internet_satellite.png'),
+                  Image.asset('assets/images/fansweek.png'),
                   Text(helper.getTranslated(context, AppTags.whoops), style: Theme.of(context).textTheme.headline4),
                   Container(height: 10),
                   Text(helper.getTranslated(context, AppTags.noInternet),

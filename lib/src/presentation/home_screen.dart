@@ -47,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // VideoScreen(),
     TabBarDemo(),
     DiscoverScreen(),
+    // DiscoverScreen(),
     ProfileScreen(
       isFromDrawer: false,
     ),
@@ -424,89 +425,89 @@ class _HomeScreenContentState extends State<HomeScreenContent> {
         ),
 
         //tags
-        SliverVisibility(
-          visible: tags!.length > 0,
-          sliver: SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8.0),
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          height: 60,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                helper.getTranslated(context, AppTags.tags),
-                                style: Theme.of(context).textTheme.headline3,
-                              ),
-                              Text(
-                                helper.getTranslated(
-                                    context, AppTags.following),
-                                style: Theme.of(context).textTheme.headline1,
-                              )
-                            ],
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, AllTagsScreen.route);
-                          },
-                          child: moreWidget(isDark, context),
-                        )
-                      ],
-                    ),
-                    Wrap(
-                      children: tags
-                          .map((tag) => Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 6.0, vertical: 3.0),
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    print(tag);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                PostByTagScreen(tag: tag)));
-                                  },
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty
-                                        .resolveWith<Color>(
-                                      (Set<MaterialState> states) {
-                                        if (states
-                                            .contains(MaterialState.pressed))
-                                          return Colors.green;
-                                        //generate a random color
-                                        return Color(
-                                                (math.Random().nextDouble() *
-                                                        0xFFFFFF)
-                                                    .toInt())
-                                            .withOpacity(1.0);
-                                      },
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12.0, vertical: 12),
-                                    child: Text(tag.toString()),
-                                  ),
-                                ),
-                              ))
-                          .toList(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
+        // SliverVisibility(
+        //   visible: tags!.length > 0,
+        //   sliver: SliverToBoxAdapter(
+        //     child: Padding(
+        //       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8.0),
+        //       child: Container(
+        //         child: Column(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           children: [
+        //             Row(
+        //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //               children: [
+        //                 Container(
+        //                   height: 60,
+        //                   child: Column(
+        //                     crossAxisAlignment: CrossAxisAlignment.start,
+        //                     mainAxisAlignment: MainAxisAlignment.start,
+        //                     children: [
+        //                       Text(
+        //                         helper.getTranslated(context, AppTags.tags),
+        //                         style: Theme.of(context).textTheme.headline3,
+        //                       ),
+        //                       Text(
+        //                         helper.getTranslated(
+        //                             context, AppTags.following),
+        //                         style: Theme.of(context).textTheme.headline1,
+        //                       )
+        //                     ],
+        //                   ),
+        //                 ),
+        //                 InkWell(
+        //                   onTap: () {
+        //                     Navigator.pushNamed(context, AllTagsScreen.route);
+        //                   },
+        //                   child: moreWidget(isDark, context),
+        //                 )
+        //               ],
+        //             ),
+        //             Wrap(
+        //               children: tags
+        //                   .map((tag) => Padding(
+        //                         padding: const EdgeInsets.symmetric(
+        //                             horizontal: 6.0, vertical: 3.0),
+        //                         child: ElevatedButton(
+        //                           onPressed: () {
+        //                             print(tag);
+        //                             Navigator.push(
+        //                                 context,
+        //                                 MaterialPageRoute(
+        //                                     builder: (context) =>
+        //                                         PostByTagScreen(tag: tag)));
+        //                           },
+        //                           style: ButtonStyle(
+        //                             backgroundColor: MaterialStateProperty
+        //                                 .resolveWith<Color>(
+        //                               (Set<MaterialState> states) {
+        //                                 if (states
+        //                                     .contains(MaterialState.pressed))
+        //                                   return Colors.green;
+        //                                 //generate a random color
+        //                                 return Color(
+        //                                         (math.Random().nextDouble() *
+        //                                                 0xFFFFFF)
+        //                                             .toInt())
+        //                                     .withOpacity(1.0);
+        //                               },
+        //                             ),
+        //                           ),
+        //                           child: Padding(
+        //                             padding: const EdgeInsets.symmetric(
+        //                                 horizontal: 12.0, vertical: 12),
+        //                             child: Text(tag.toString()),
+        //                           ),
+        //                         ),
+        //                       ))
+        //                   .toList(),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
         //banner ads
         SliverToBoxAdapter(
           child: Padding(

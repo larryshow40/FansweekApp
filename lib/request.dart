@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:onoo/src/data/model/prediction_model.dart';
 import 'package:onoo/src/presentation/video_screen.dart';
 
 class APIService {
@@ -17,7 +18,7 @@ class APIService {
     "x-rapidapi-key": _api_key,
   };
 
-  static Future<List<Map<String, dynamic>>> getPredictions(
+  Future<List<PredictionData>> getPredictions(
       String date, String fed, String market) async {
     var dateTime = DateTime.now();
     String isoDate = "${dateTime.year}-${dateTime.month}-${dateTime.day}";
@@ -28,11 +29,15 @@ class APIService {
     Uri uri = Uri.parse(fed != "" && market != ""
         ? "https://football-prediction-api.p.rapidapi.com/api/v2/predictions?market=$market&iso_date=$isoDate&federation=$fed"
         : "https://football-prediction-api.p.rapidapi.com/api/v2/predictions?iso_date=$isoDate");
+    print(_headers);
     final response = await http.get(uri, headers: _headers);
     print(response.statusCode);
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
-      final data = List<Map<String, dynamic>>.from(jsonResponse['data']);
+      final parsed = jsonResponse['data'].cast<Map<String, dynamic>>();
+      List<PredictionData> data = parsed
+          .map<PredictionData>((json) => PredictionData.fromJson(json))
+          .toList();
       return data;
     } else {
       // If that response was not OK, throw an error.

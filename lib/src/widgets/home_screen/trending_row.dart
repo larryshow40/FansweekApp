@@ -60,13 +60,13 @@ class TrendingRow extends StatelessWidget {
                         fit: BoxFit.cover,
                         imageErrorBuilder: (context, error, stackTrace) =>
                             Image.asset(
-                              "assets/images/logo_round.png",
+                              "assets/images/fansweek.png",
                               fit: BoxFit.cover,
                             ),
                         image: trendingPosts!.image != null
                             ? trendingPosts!.image!.mediumImage!
                             : "",
-                        placeholder: "assets/images/logo_round.png"),
+                        placeholder: "assets/images/fansweek.png"),
                   ),
                 ),
                 Expanded(

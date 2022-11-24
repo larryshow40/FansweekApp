@@ -128,7 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   : AppThemeData.textColorLight)),
                       // ignore: unnecessary_null_comparison
                       if(user != null)
-                      Text(user.about!.length > 2 ? user.about! : "Bangladesh, Dhaka", style: TextStyle(fontSize: 18, color: Color(0xff999999)),),
+                      Text(user.about!.length > 2 ? user.about! : "Lagos, Nigeria", style: TextStyle(fontSize: 18, color: Color(0xff999999)),),
                       SizedBox(
                         height: 10,
                       )
@@ -156,99 +156,99 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   )
                 ],
               ),
-              SizedBox(height: 30),
-              FutureBuilder<List<CommonPostModel>>(
-                future: Repository().getMyPosts(id: id),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return _buildMyPost(context, snapshot.data!);
-                  }
-                  return Center(
-                    child: LoadingIndicator(),
-                  );
-                },
-              )
+              // SizedBox(height: 30),
+              // FutureBuilder<List<CommonPostModel>>(
+              //   future: Repository().getMyPosts(id: id),
+              //   builder: (context, snapshot) {
+              //     if (snapshot.hasData) {
+              //       return _buildMyPost(context, snapshot.data!);
+              //     }
+              //     return Center(
+              //       child: LoadingIndicator(),
+              //     );
+              //   },
+              // )
             ],
           )),
     );
   }
 
-  Widget _buildMyPost(BuildContext context, List<CommonPostModel> postList) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              helper.getTranslated(context, AppTags.myPost),
-              style: Theme.of(context).textTheme.headline3,
-            ),
-            Text(
-              helper.getTranslated(context, AppTags.wishList),
-              style: Theme.of(context).textTheme.headline3,
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        //grid view
-        Container(
-          child: GridView.count(
-            crossAxisCount: 3,
-            childAspectRatio: (120 / 180),
-            controller: ScrollController(keepScrollOffset: false),
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            physics: NeverScrollableScrollPhysics(),
-            // to disable GridView's scrolling
-            children: List.generate(postList.length, (index) {
-              return InkWell(
-                onTap: () {
-                  //go to post detals  screen
-                  Navigator.pushNamed(context, PostDetailsScreen.route,
-                      arguments: {
-                        'postId': postList[index].id,
-                        'image': postList[index].image != null
-                            ? postList[index].image!.bigImage ?? null
-                            : null,
-                      });
-                },
-                child: Stack(fit: StackFit.expand, children: [
-                  Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              AppThemeData.cardBorderRadius)),
-                      elevation: AppThemeData.cardElevation,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(AppThemeData.cardBorderRadius)),
-                        child: FadeInImage.assetNetwork(
-                            fit: BoxFit.cover,
-                            imageErrorBuilder: (context, error, stackTrace) =>
-                                Image.asset("assets/images/logo_round.png",
-                                    fit: BoxFit.contain),
-                            placeholder: "assets/images/logo_round.png",
-                            image: postList[index].image!.mediumImage!),
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10, bottom: 10),
-                    child: Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Text(
-                          postList[index].title,
-                          maxLines: 4,
-                          style: Theme.of(context).textTheme.headline4,
-                        )),
-                  ),
-                ]),
-              );
-            }),
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _buildMyPost(BuildContext context, List<CommonPostModel> postList) {
+  //   return Column(
+  //     children: [
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         children: [
+  //           Text(
+  //             helper.getTranslated(context, AppTags.myPost),
+  //             style: Theme.of(context).textTheme.headline3,
+  //           ),
+  //           Text(
+  //             helper.getTranslated(context, AppTags.wishList),
+  //             style: Theme.of(context).textTheme.headline3,
+  //           ),
+  //         ],
+  //       ),
+  //       SizedBox(
+  //         height: 10,
+  //       ),
+  //       //grid view
+  //       Container(
+  //         child: GridView.count(
+  //           crossAxisCount: 3,
+  //           childAspectRatio: (120 / 180),
+  //           controller: ScrollController(keepScrollOffset: false),
+  //           shrinkWrap: true,
+  //           scrollDirection: Axis.vertical,
+  //           physics: NeverScrollableScrollPhysics(),
+  //           // to disable GridView's scrolling
+  //           children: List.generate(postList.length, (index) {
+  //             return InkWell(
+  //               onTap: () {
+  //                 //go to post detals  screen
+  //                 Navigator.pushNamed(context, PostDetailsScreen.route,
+  //                     arguments: {
+  //                       'postId': postList[index].id,
+  //                       'image': postList[index].image != null
+  //                           ? postList[index].image!.bigImage ?? null
+  //                           : null,
+  //                     });
+  //               },
+  //               child: Stack(fit: StackFit.expand, children: [
+  //                 Card(
+  //                     shape: RoundedRectangleBorder(
+  //                         borderRadius: BorderRadius.circular(
+  //                             AppThemeData.cardBorderRadius)),
+  //                     elevation: AppThemeData.cardElevation,
+  //                     child: ClipRRect(
+  //                       borderRadius: BorderRadius.all(
+  //                           Radius.circular(AppThemeData.cardBorderRadius)),
+  //                       child: FadeInImage.assetNetwork(
+  //                           fit: BoxFit.cover,
+  //                           imageErrorBuilder: (context, error, stackTrace) =>
+  //                               Image.asset("assets/images/logo_round.png",
+  //                                   fit: BoxFit.contain),
+  //                           placeholder: "assets/images/logo_round.png",
+  //                           image: postList[index].image!.mediumImage!),
+  //                     )),
+  //                 Padding(
+  //                   padding: const EdgeInsets.only(left: 10, bottom: 10),
+  //                   child: Align(
+  //                       alignment: Alignment.bottomLeft,
+  //                       child: Text(
+  //                         postList[index].title,
+  //                         maxLines: 4,
+  //                         style: Theme.of(context).textTheme.headline4,
+  //                       )),
+  //                 ),
+  //               ]),
+  //             );
+  //           }),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   void showSnackbar({required String message}) {
     ScaffoldMessenger.of(context)
@@ -270,13 +270,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             image: DecorationImage(
           fit: BoxFit.fill,
           image: isDark
-              ? AssetImage('assets/images/background_dark.png')
-              : AssetImage('assets/images/background_light.png'),
+              ? AssetImage('assets/images/login_screen_dark.png')
+              : AssetImage('assets/images/login_screen_dark.png'),
         )),
         child: Column(
           children: [
-            SizedBox(height: 60),
-            _buildTopUI(isDark),
+            SizedBox(height: 150),
+           // _buildTopUI(isDark),
             SizedBox(height: 50),
             Padding(
               padding: const EdgeInsets.only(left: 30, right: 30),
@@ -444,9 +444,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   //build_screen_header
-  Widget _buildTopUI(bool isDark) {
-    return isDark
-        ? Image.asset('assets/images/logo_round_dark.png', scale: 4)
-        : Image.asset('assets/images/logo_round_light.png', scale: 4);
-  }
+  // Widget _buildTopUI(bool isDark) {
+  //   return isDark
+  //       ? Image.asset('assets/images/logo_round_dark.png', scale: 4)
+  //       : Image.asset('assets/images/logo_round_light.png', scale: 4);
+  // }
 }

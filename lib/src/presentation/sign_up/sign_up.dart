@@ -120,8 +120,8 @@ class _SignupScreenState extends State<SignupScreen> {
               image: DecorationImage(
             fit: BoxFit.fill,
             image: isDark
-                ? AssetImage('assets/images/background_dark.png')
-                : AssetImage('assets/images/background_light.png'),
+                ? AssetImage('assets/images/login_screen_dark.png')
+                : AssetImage('assets/images/login_screen_dark.png'),
           )),
           child: Stack(
             children: [
@@ -129,9 +129,10 @@ class _SignupScreenState extends State<SignupScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: AppThemeData.wholeScreenPadding * 2),
                 child: Column(
                   children: [
-                    SizedBox(height: 40),
-                    _buildTopUI(context, isDark),
-                    SizedBox(height: 20),
+                               SizedBox(height: MediaQuery.of(context).size.height / 3.7),
+
+                  //  _buildTopUI(context, isDark),
+                    SizedBox(height: 10),
                     //first name
                     //_buildFullNameTF(),
                     CustomEditText().getCustomEditText(
