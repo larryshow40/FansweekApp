@@ -4,10 +4,10 @@ class Config {
   //API server url
   // static const String API_SERVER_URL    = "https://onno.demo.spagreen.net/api";
   // static const String API_SERVER_URL = "http://www.fansweek.com/api/v10";
-  static const String API_SERVER_URL = "http://www.fansweek.com/api";
+  static const String API_SERVER_URL = "https://fansweek.com/api";
   //API key
   // static const String API_KEY           = "Yu%(iz3x8tt@U9!FuppgUJjwYdJI04G5";
-  static const String API_KEY = "Ulllmrj^a)8gbr#r^&epN2gmxocqlSwf";
+  static const String API_KEY = "DyXStdqO5dx4&ed35!0pCV83EJqtAx3x";
   // OneSignal App ID
   static const String ONE_SIGNAL_APP_ID =
       "aebb5e8f-7915-44aa-b1d6-badfc190803a";

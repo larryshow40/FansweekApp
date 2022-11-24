@@ -336,11 +336,22 @@ class _MWTabBarScreen2State extends State<TabBarDemo> {
                             width: MediaQuery.of(context).size.width,
                             color: Colors.red,
                             child: Center(
-                              child: Text(
-                                '$item',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    '',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    '$item',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -352,7 +363,6 @@ class _MWTabBarScreen2State extends State<TabBarDemo> {
                                 (item) => Column(
                                   children: [
                                     ListTile(
-
                                       title: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
@@ -373,14 +383,16 @@ class _MWTabBarScreen2State extends State<TabBarDemo> {
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 14,
-                                                    fontWeight: FontWeight.bold),
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
                                               Text(
                                                 "${item['away_team']}",
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 14,
-                                                    fontWeight: FontWeight.bold),
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
                                             ],
                                           ),
@@ -393,20 +405,25 @@ class _MWTabBarScreen2State extends State<TabBarDemo> {
                                                 style: TextStyle(
                                                     color: Colors.deepPurple,
                                                     fontSize: 14,
-                                                    fontWeight: FontWeight.bold),
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
                                               Text(
                                                 "Odds: ${item['odds']['1']}",
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 14,
-                                                    fontWeight: FontWeight.bold),
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
                                             ],
                                           ),
                                         ],
                                       ),
-                                      trailing: Icon(Icons.arrow_forward_ios_rounded,color: Colors.black,),
+                                      trailing: Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        color: Colors.black,
+                                      ),
                                       onTap: () {
                                         Navigator.push(
                                           context,
@@ -417,8 +434,11 @@ class _MWTabBarScreen2State extends State<TabBarDemo> {
                                         );
                                       },
                                     ),
-                                    Divider(color: Colors.black,thickness: 1.5,height: 0,),
-
+                                    Divider(
+                                      color: Colors.black,
+                                      thickness: 1.5,
+                                      height: 0,
+                                    ),
                                   ],
                                 ),
                               )
